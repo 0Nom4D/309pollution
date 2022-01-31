@@ -1,0 +1,45 @@
+name: PyTest Computing
+
+on:
+  push:
+    paths:
+      - 'sources/**'
+      - 'tests/**'
+      - '.github/workflows/pytest.yaml'
+      - '.github/workflows/launch.yml'
+  pull_request:
+    paths:
+      - 'sources/**'
+      - 'tests/**'
+      - '.github/workflows/pytest.yaml'
+      - '.github/workflows/launch.yml'
+
+jobs:
+  LaunchPytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2.2.2
+        with:
+          python-version: 3.9.7
+
+      - name: Install Depedencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install python3-pip
+          /opt/hostedtoolcache/Python/3.9.7/x64/bin/python -m pip install --upgrade pip
+          sudo pip install coverage
+          sudo pip install pytest
+
+      - name: Launch Python Unit Tests
+        run: coverage run --rcfile=.coveragerc -m --source=sources/ pytest --capture=sys -rA tests/ >> uTestsResults
+
+      - name: Compute Unit Tests Coverage
+        run: coverage report -m >> coverageReport
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: |
+            ./uTestsResults
+            ./coverageReport

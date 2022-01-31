@@ -1,0 +1,54 @@
+name: ProjectTests
+
+on:
+  push:
+    paths:
+      - 'sources/**'
+      - 'tests/**'
+      - '.github/workflows/launch.yaml'
+  pull_request:
+    paths:
+      - 'sources/**'
+      - 'tests/**'
+      - '.github/workflows/launch.yaml'
+
+jobs:
+  TestProject:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2.2.2
+        with:
+          python-version: 3.9.7
+
+      - name: Install Depedencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install python3-pip
+          /opt/hostedtoolcache/Python/3.9.7/x64/bin/python -m pip install --upgrade pip
+
+      - name: Launch Subject Tests
+        run: |
+          ./309pollution 3 test_files/test.csv 0 2 >> testResult
+          ./309pollution 3 test_files/test.csv 0.6 2 >> testResult
+          ./309pollution 3 test_files/test.csv 1.3 2 >> testResult
+          ./309pollution 3 test_files/test.csv 1 1.5 >> testResult
+          ./309pollution 3 test_files/test.csv 0.8 0.8 >> testResult
+
+      - name: Launch Error Handling Test 1
+        continue-on-error: true
+        run: ./309pollution 3 test_files/test.csv a b >> testResult
+
+      - name: Launch Error Handling Test 2
+        continue-on-error: true
+        run: ./309pollution 3 test_files/unknown_file.csv 0 2 >> testResult
+
+      - name: Launch Error Handling Test 3
+        continue-on-error: true
+        run: ./309pollution 3 test_files/wrong_test.csv 0.6 2 >> testResult
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: |
+            ./testResult
