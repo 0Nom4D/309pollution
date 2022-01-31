@@ -17,6 +17,14 @@ class TestArgChecker:
         tArgChecker = ArgChecker()
         assert tArgChecker.are_numerical_args_conform(['3', '0.5', '2'])
 
+    def test_all_checks_args(self) -> None:
+        tArgChecker = ArgChecker()
+        assert tArgChecker.check_args_conformity(['3', './test_files/test.csv', '0', '2'])
+
+    def test_wrong_checks_args(self) -> None:
+        tArgChecker = ArgChecker()
+        assert not tArgChecker.check_args_conformity(['3', './test_files/wrong_test.csv', '0.5', '2'])
+
     def test_wrong_type_arg(self, capsys) -> None:
         tArgChecker = ArgChecker()
         assert not tArgChecker.are_numerical_args_conform(['3.12', '0', '2'])
