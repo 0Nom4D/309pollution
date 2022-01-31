@@ -9,6 +9,13 @@ from os.path import exists, splitext
 from typing import List, Union
 import csv
 
+class ArgumentException(Exception):
+    def __init__(self, message="Error occurs when handling an argument!"):
+        self.message = message
+
+    def __str__(self):
+        return f'{self.message}'
+
 
 class ArgChecker:
     def __init__(self) -> None:
@@ -46,9 +53,15 @@ class ArgChecker:
             reader = csv.reader(fd, delimiter=';')
             try:
                 for row in reader:
+                    if len(row) != 3:
+                        raise ArgumentException("CSV File must have only 3 variables per line")
                     _ = [int(value) for value in row]
                     self._file_content.append(_)
             except ValueError as err:
+                self._file_content = None
+                print(f"{type(err).__name__}: {err}")
+                return False
+            except ArgumentException as err:
                 self._file_content = None
                 print(f"{type(err).__name__}: {err}")
                 return False
