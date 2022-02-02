@@ -6,6 +6,7 @@
 ##
 
 from math import factorial, pow
+from typing import List, Tuple
 
 
 class Pollution:
@@ -15,14 +16,30 @@ class Pollution:
         self._city_map = [[0 for _ in range(self._n)] for _ in range(self._n)]
         self._file_content = file_content
 
-    def _fill_map(self) -> None:
+    @property
+    def fileContent(self) -> List[List[int]]:
+        return self._file_content
+
+    @property
+    def cityMap(self) -> List[List[int]]:
+        return self._city_map
+
+    @property
+    def chosenCoordinates(self) -> Tuple[float, float]:
+        return self._coordinates
+
+    @property
+    def size(self) -> int:
+        return self._n
+
+    def fill_map(self) -> None:
         for coords in self._file_content:
             self._city_map[coords[0]][coords[1]] = coords[2]
 
     def get_binomial_coef(self, n: float, k: float) -> float:
         return factorial(n) / (factorial(k) * factorial(n - k))
 
-    def _compute_bezier_values(self) -> float:
+    def compute_bezier_values(self) -> float:
         pollution_value = float(0)
 
         for x in range(self._n):
@@ -36,5 +53,5 @@ class Pollution:
         return pollution_value
 
     def launch_engine(self) -> None:
-        self._fill_map()
-        print(f'{self._compute_bezier_values():.2f}')
+        self.fill_map()
+        print(f'{self.compute_bezier_values():.2f}')

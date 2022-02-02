@@ -45,6 +45,25 @@ class TestArgChecker:
             assert stdout == "ValueError: invalid literal for int() with base 10: 'a'\n"
             assert tArgChecker.fileContent is None
 
+    def test_file_with_negative_arguments(self) -> None:
+        tArgChecker = ArgChecker()
+        assert not tArgChecker.are_numerical_args_conform(["-3", "0", "-2"])
+
+    def test_file_with_negative_coordinates(self) -> None:
+        tArgChecker = ArgChecker()
+        if tArgChecker.are_numerical_args_conform(["3", "0", "2"]):
+            assert not tArgChecker.is_file_conform('./test_files/negative_coordinates_file.csv')
+
+    def test_file_with_higher_coordinates_than_size(self) -> None:
+        tArgChecker = ArgChecker()
+        if tArgChecker.are_numerical_args_conform(["3", "0", "2"]):
+            assert not tArgChecker.is_file_conform('./test_files/higher_than_size.csv')
+
+    def test_wrong_coordinates_in_file(self) -> None:
+        tArgChecker = ArgChecker()
+        if tArgChecker.are_numerical_args_conform(["3", "0", "2"]):
+            assert not tArgChecker.is_file_conform('./test_files/wrong_test_2.csv')
+
     def test_maybe_a_wrong_file(self) -> None:
         tArgChecker = ArgChecker()
         assert not tArgChecker.is_file_conform("./test_files/maybe_a_wrong_file.txt")
