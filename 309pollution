@@ -7,6 +7,7 @@
 ##
 
 from sources.ArgChecker import ArgChecker
+from sources.Pollution import Pollution
 from sources.exitCode import exitCode
 from sys import argv
 
@@ -30,6 +31,8 @@ def main() -> int:
         return exitCode.ERROR
     if not arg_checker.check_args_conformity(argv[1:]):
         return exitCode.ERROR
+    pollution_engine = Pollution(arg_checker.numericalArgs, arg_checker.fileContent)
+    pollution_engine.launch_engine()
     return exitCode.OK
 
 

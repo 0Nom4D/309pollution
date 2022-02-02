@@ -43,7 +43,8 @@ class ArgChecker:
                 self._cleaned_args = None
                 print(f"{type(err).__name__}: {err}")
                 return False
-        print(self.numericalArgs)
+        if any(value < 0 for value in self._cleaned_args):
+            return False
         return True
 
     def is_file_conform(self, filepath: str) -> bool:
@@ -56,6 +57,10 @@ class ArgChecker:
                     if len(row) != 3:
                         raise ArgumentException("CSV File must have only 3 variables per line")
                     _ = [int(value) for value in row]
+                    if any(value < 0 for value in _):
+                        raise ArgumentException("CSV File must contain only positive coordinates.")
+                    elif _[0] >= self._cleaned_args[0] or _[1] >= self._cleaned_args[0]:
+                        raise ArgumentException("CSV File must contain coordinates between 0 and 'n' argument.")
                     self._file_content.append(_)
             except ValueError as err:
                 self._file_content = None
@@ -69,6 +74,6 @@ class ArgChecker:
         return True
 
     def check_args_conformity(self, args: list) -> bool:
-        if not self.is_file_conform(args[1]) or not self.are_numerical_args_conform(args[:1] + args[2:]):
+        if not self.are_numerical_args_conform(args[:1] + args[2:]) or not self.is_file_conform(args[1]):
             return False
         return True

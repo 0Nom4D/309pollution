@@ -48,6 +48,14 @@ jobs:
         continue-on-error: true
         run: ./309pollution 3 test_files/wrong_test.csv 0.6 2 >> testResult
 
+      - name: Launch Error Handling Test 4
+        continue-on-error: true
+        run: ./309pollution 3 test_files/higher_than_size.csv 0 2 >> testResult
+
+      - name: Launch Error Handling Test 5
+        continue-on-error: true
+        run: ./309pollution 3 test_files/negative_coordinates_file.csv 0 2 >> testResult
+
       - uses: actions/upload-artifact@v2
         with:
           path: |
