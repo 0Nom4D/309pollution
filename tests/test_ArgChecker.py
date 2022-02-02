@@ -34,14 +34,16 @@ class TestArgChecker:
 
     def test_basic_file(self) -> None:
         tArgChecker = ArgChecker()
-        assert tArgChecker.is_file_conform('./test_files/test.csv')
+        if tArgChecker.are_numerical_args_conform(["3", "0", "2"]):
+            assert tArgChecker.is_file_conform('./test_files/test.csv')
 
     def test_file_with_wrong_values(self, capsys) -> None:
         tArgChecker = ArgChecker()
-        assert not tArgChecker.is_file_conform('./test_files/wrong_test.csv')
-        stdout = capsys.readouterr()[0]
-        assert stdout == "ValueError: invalid literal for int() with base 10: 'a'\n"
-        assert tArgChecker.fileContent is None
+        if tArgChecker.are_numerical_args_conform(["3", "0", "2"]):
+            assert not tArgChecker.is_file_conform('./test_files/wrong_test.csv')
+            stdout = capsys.readouterr()[0]
+            assert stdout == "ValueError: invalid literal for int() with base 10: 'a'\n"
+            assert tArgChecker.fileContent is None
 
     def test_maybe_a_wrong_file(self) -> None:
         tArgChecker = ArgChecker()
