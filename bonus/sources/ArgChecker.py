@@ -9,7 +9,6 @@ from os.path import exists, splitext
 from typing import List, Union
 import csv
 
-
 class ArgumentException(Exception):
     def __init__(self, message="Error occurs when handling an argument!"):
         self.message = message

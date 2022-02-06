@@ -11,5 +11,5 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
         with:
-          source-repo: git@github.com:0Nom4D/308reedpipes.git
+          source-repo: git@github.com:0Nom4D/309pollution.git
           destination-repo: git@github.com:EpitechPromo2024/B-MAT-500-NAN-5-1-309pollution-arthur.adam.git
