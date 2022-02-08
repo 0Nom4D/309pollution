@@ -49,7 +49,7 @@ class ArgChecker:
         return True
 
     def is_file_conform(self, filepath: str) -> bool:
-        if not exists(filepath) or splitext(filepath)[1] != '.csv':
+        if not exists(filepath):
             return False
         with open(filepath, encoding="utf-8") as fd:
             reader = csv.reader(fd, delimiter=';')
