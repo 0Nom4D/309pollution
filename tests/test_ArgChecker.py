@@ -66,7 +66,8 @@ class TestArgChecker:
 
     def test_maybe_a_wrong_file(self) -> None:
         tArgChecker = ArgChecker()
-        assert not tArgChecker.is_file_conform("./test_files/maybe_a_wrong_file.txt")
+        if tArgChecker.are_numerical_args_conform(["3", "0", "2"]):
+            assert tArgChecker.is_file_conform("./test_files/maybe_a_wrong_file.txt")
 
     def test_unknown_file(self) -> None:
         tArgChecker = ArgChecker()
