@@ -44,7 +44,9 @@ class ArgChecker:
                 self._cleaned_args = None
                 print(f"{type(err).__name__}: {err}")
                 return False
-        if any(value < 0 for value in self._cleaned_args):
+        if any(value < 0 for value in self._cleaned_args) or \
+                any(value > self._cleaned_args[0] - 1 for value in self._cleaned_args[1:]):
+            self._cleaned_args = None
             return False
         return True
 
